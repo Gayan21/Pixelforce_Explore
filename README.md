@@ -53,6 +53,6 @@ lib/
  │           ├─ living_style_card.dart
  │           └─ experience_card.dart
  └─ main.dart
-
+---
 
 
