@@ -32,20 +32,26 @@ flutter run
 lib/
  ├─ core/
  │   ├─ api/
- │   │    └─ api_client.dart
+ │   │   └─ api_client.dart
  │   ├─ models/
- │   │    └─ trip.dart, living_style.dart, experience.dart, user.dart
+ │   │   ├─ trip.dart
+ │   │   ├─ living_style.dart
+ │   │   ├─ experience.dart
+ │   │   └─ user.dart
  │   └─ styles/
- │        └─ app_colors.dart, app_text.dart
+ │       ├─ app_colors.dart
+ │       └─ app_text.dart
  ├─ features/
  │   ├─ onboarding/
- │   │    └─ onboarding_page.dart
+ │   │   └─ onboarding_page.dart
  │   ├─ auth/
- │   │    └─ login_page.dart
+ │   │   └─ login_page.dart
  │   └─ explore/
- │        ├─ explore_page.dart
- │        └─ widgets/
- │             └─ trip_card.dart, living_style_card.dart, experience_card.dart
+ │       ├─ explore_page.dart
+ │       └─ widgets/
+ │           ├─ trip_card.dart
+ │           ├─ living_style_card.dart
+ │           └─ experience_card.dart
  └─ main.dart
 
 
