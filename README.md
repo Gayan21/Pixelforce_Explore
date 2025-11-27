@@ -46,6 +46,7 @@ lib/
 │   └── styles/
 │       ├── app_colors.dart
 │       └── app_text.dart
+        └── app_theme.dart
 ├── features/
 │   ├── onboarding/
 │   │   └── onboarding_page.dart
