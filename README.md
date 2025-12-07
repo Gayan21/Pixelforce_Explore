@@ -17,11 +17,13 @@ This Flutter project implements the Explore screen from the PixelForce Figma des
 
 1. Ensure Flutter SDK is installed.
 2. Extract or clone the project.
-3. From project root run:
+3. How to run:
 
 ```bash
+cd pixelforce_challenge
 flutter pub get
 flutter run
+
 ```
 
 ## Summary
@@ -46,6 +48,7 @@ lib/
 │   └── styles/
 │       ├── app_colors.dart
 │       └── app_text.dart
+        └── app_theme.dart
 ├── features/
 │   ├── onboarding/
 │   │   └── onboarding_page.dart
