@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../../core/models/experience.dart';
+import '../../../core/models/experience_model.dart';
 import '../../../core/styles/app_text.dart';
 
 class ExperienceCard extends StatelessWidget {
-  final Experience exp;
+  final ExperienceModel exp;
   const ExperienceCard({super.key, required this.exp});
 
   @override
@@ -15,7 +15,7 @@ class ExperienceCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.15),
+            color: Colors.black.withAlpha((0.15 * 255).toInt()),
             blurRadius: 24,
             offset: const Offset(0, 6),
           ),

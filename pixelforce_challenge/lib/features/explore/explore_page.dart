@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import '../../core/styles/app_colors.dart';
 import '../../core/styles/app_text.dart';
 import '../../core/api/api_client.dart';
-import '../../core/models/trip.dart';
-import '../../core/models/living_style.dart';
-import '../../core/models/experience.dart';
+import '../../core/models/trip_model.dart';
+import '../../core/models/living_style_model.dart';
+import '../../core/models/experience_model.dart';
 import 'widgets/trip_card.dart';
 import 'widgets/living_style_card.dart';
 import 'widgets/experience_card.dart';
@@ -17,9 +17,9 @@ class ExplorePage extends StatefulWidget {
 }
 
 class _ExplorePageState extends State<ExplorePage> {
-  late Future<List<Trip>> tripsFuture;
-  late Future<List<LivingStyle>> livingFuture;
-  late Future<List<Experience>> expFuture;
+  late Future<List<TripModel>> tripsFuture;
+  late Future<List<LivingStyleModel>> livingFuture;
+  late Future<List<ExperienceModel>> expFuture;
 
   @override
   void initState() {
@@ -47,7 +47,7 @@ class _ExplorePageState extends State<ExplorePage> {
                     const SizedBox(height: 20),
                     _sectionHeader('Find your next trip', actionLabel: 'See all'),
                     const SizedBox(height: 12),
-                    FutureBuilder<List<Trip>>(
+                    FutureBuilder<List<TripModel>>(
                       future: tripsFuture,
                       builder: (context, snap) {
                         if (snap.connectionState != ConnectionState.done) {
@@ -71,7 +71,7 @@ class _ExplorePageState extends State<ExplorePage> {
                     const SizedBox(height: 36),
                     _sectionHeader('Explore by living style'),
                     const SizedBox(height: 12),
-                    FutureBuilder<List<LivingStyle>>(
+                    FutureBuilder<List<LivingStyleModel>>(
                       future: livingFuture,
                       builder: (context, snap) {
                         if (snap.connectionState != ConnectionState.done) {
@@ -95,7 +95,7 @@ class _ExplorePageState extends State<ExplorePage> {
                     const SizedBox(height: 36),
                     _sectionHeader('Want to discover other experiences'),
                     const SizedBox(height: 12),
-                    FutureBuilder<List<Experience>>(
+                    FutureBuilder<List<ExperienceModel>>(
                       future: expFuture,
                       builder: (context, snap) {
                         if (snap.connectionState != ConnectionState.done) {

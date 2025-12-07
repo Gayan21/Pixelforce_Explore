@@ -91,7 +91,6 @@ class OnboardingPage extends StatelessWidget {
                     style: const TextStyle(
                       fontSize: 16,
                       height: 1.5,
-                      letterSpacing: 0.02,
                       color: AppColors.navGray,
                     ),
                   ),
@@ -113,10 +112,7 @@ class OnboardingPage extends StatelessWidget {
                       child: Ink(
                         decoration: BoxDecoration(
                           gradient: const LinearGradient(
-                            colors: [
-                              Color(0xFF917AFD),
-                              Color(0xFF6246EA),
-                            ],
+                            colors: [Color(0xFF917AFD), Color(0xFF6246EA)],
                           ),
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -136,7 +132,6 @@ class OnboardingPage extends StatelessWidget {
 
                   const SizedBox(height: 16),
 
-                  
                   TextButton(
                     onPressed: () =>
                         Navigator.pushReplacementNamed(context, '/login'),
@@ -153,7 +148,6 @@ class OnboardingPage extends StatelessWidget {
             ),
           ),
 
-        
           Positioned(
             left: 0,
             right: 0,
@@ -181,11 +175,17 @@ class OnboardingPage extends StatelessWidget {
           margin: const EdgeInsets.only(bottom: 9),
           height: heights[i],
           width: 109,
-          decoration: BoxDecoration(
+          child: ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            image: DecorationImage(
-              image: NetworkImage(urls[i]),
+            child: Image.network(
+              urls[i],
               fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  color: Colors.grey.shade300,
+                  child: const Icon(Icons.error, color: Colors.red),
+                );
+              },
             ),
           ),
         );

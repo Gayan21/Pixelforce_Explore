@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import '../../../core/models/trip.dart';
+import '../../../core/models/trip_model.dart';
 import '../../../core/styles/app_text.dart';
 
 class TripCard extends StatelessWidget {
-  final Trip trip;
+  final TripModel trip;
   const TripCard({super.key, required this.trip});
 
   @override
@@ -15,7 +15,7 @@ class TripCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.15),
+            color: Colors.black.withAlpha((0.15 * 255).toInt()),
             blurRadius: 24,
             offset: const Offset(0, 6),
           ),

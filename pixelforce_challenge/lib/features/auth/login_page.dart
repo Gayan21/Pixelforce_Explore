@@ -15,12 +15,34 @@ class _LoginPageState extends State<LoginPage> {
   bool loading = false;
 
   Future<void> _login() async {
-    setState(() => loading = true);
-    await Future.delayed(const Duration(seconds: 1)); // simulate network
-    if (!mounted) return;
+    try {
+      setState(() => loading = true);
 
-    setState(() => loading = false);
-    Navigator.pushReplacementNamed(context, '/explore');
+      await Future.delayed(const Duration(seconds: 1)); // simulate network
+
+      // SIMPLE VALIDATION (errors shown to user)
+      if (username.text.isEmpty || password.text.isEmpty) {
+        throw Exception("Please enter username and password");
+      }
+
+      if (!mounted) return;
+
+      setState(() => loading = false);
+      Navigator.pushReplacementNamed(context, '/explore');
+
+    } catch (e) {
+      if (mounted) {
+        setState(() => loading = false);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.toString()),
+            backgroundColor: Colors.red,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -35,11 +57,8 @@ class _LoginPageState extends State<LoginPage> {
             children: [
               const SizedBox(height: 20),
 
-              // Back button
               IconButton(
-                onPressed: () {
-                  Navigator.pop(context); // navigates back to onboarding
-                },
+                onPressed: () => Navigator.pop(context),
                 icon: const Icon(Icons.arrow_back),
                 color: AppColors.blueDark,
               ),
@@ -53,15 +72,11 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 8),
               Text(
                 "Sign in to continue",
-                style: TextStyle(
-                  fontSize: 14,
-                  color: AppColors.navGray,
-                ),
+                style: TextStyle(fontSize: 14, color: AppColors.navGray),
               ),
 
               const SizedBox(height: 40),
 
-              // Username
               Text(
                 "Username",
                 style: TextStyle(
@@ -90,7 +105,6 @@ class _LoginPageState extends State<LoginPage> {
 
               const SizedBox(height: 20),
 
-              // Password
               Text(
                 "Password",
                 style: TextStyle(
@@ -120,24 +134,19 @@ class _LoginPageState extends State<LoginPage> {
 
               const SizedBox(height: 12),
 
-              // Forgot password
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () {},
                   child: Text(
                     "Forgot password?",
-                    style: TextStyle(
-                      color: AppColors.navGray,
-                      fontSize: 14,
-                    ),
+                    style: TextStyle(color: AppColors.navGray, fontSize: 14),
                   ),
                 ),
               ),
 
               const SizedBox(height: 20),
 
-              // Login button
               SizedBox(
                 width: double.infinity,
                 height: 50,
@@ -183,17 +192,13 @@ class _LoginPageState extends State<LoginPage> {
 
               const SizedBox(height: 30),
 
-              // Continue as guest
               Center(
                 child: TextButton(
                   onPressed: () =>
                       Navigator.pushReplacementNamed(context, '/explore'),
                   child: Text(
                     "Continue as guest",
-                    style: TextStyle(
-                      color: AppColors.blueDark,
-                      fontSize: 14,
-                    ),
+                    style: TextStyle(color: AppColors.blueDark, fontSize: 14),
                   ),
                 ),
               ),
