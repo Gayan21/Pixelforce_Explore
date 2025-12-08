@@ -41,9 +41,3 @@ class ApiClient {
 }
 
 
-
-// 1. Please include the social logins as in the figma 
-// 2. ⁠Include loading indicators
-// 3. ⁠if error occurs indicate it the user
-// 4. ⁠Good if we can rename the model class lose living_style_model.dart (Just a good have a thing)
-// 5. ⁠WithaOpacity key word is deprecated

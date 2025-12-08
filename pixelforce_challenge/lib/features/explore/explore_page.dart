@@ -24,9 +24,78 @@ class _ExplorePageState extends State<ExplorePage> {
   @override
   void initState() {
     super.initState();
+    _fetchData();
+  }
+
+  void _fetchData() {
     tripsFuture = ApiClient.fetchTrips();
     livingFuture = ApiClient.fetchLivingStyles();
     expFuture = ApiClient.fetchExperiences();
+  }
+
+  Widget _buildSection<T>({
+    required String title,
+    String? actionLabel,
+    required Future<List<T>> future,
+    required double height,
+    required Widget Function(T item) itemBuilder,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _sectionHeader(title, actionLabel: actionLabel),
+        const SizedBox(height: 12),
+        FutureBuilder<List<T>>(
+          future: future,
+          builder: (context, snap) {
+            if (snap.connectionState != ConnectionState.done) {
+              return SizedBox(
+                height: height,
+                child: const Center(child: CircularProgressIndicator()),
+              );
+            }
+            if (snap.hasError) {
+              return SizedBox(
+                height: height,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Error loading data'),
+                      const SizedBox(height: 8),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {
+                            _fetchData();
+                          });
+                        },
+                        child: const Text('Retry'),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            }
+            final list = snap.data ?? [];
+            if (list.isEmpty) {
+              return SizedBox(
+                height: height,
+                child: const Center(child: Text('No data available')),
+              );
+            }
+            return SizedBox(
+              height: height,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                itemCount: list.length,
+                separatorBuilder: (_, __) => const SizedBox(width: 20),
+                itemBuilder: (_, i) => itemBuilder(list[i]),
+              ),
+            );
+          },
+        ),
+      ],
+    );
   }
 
   @override
@@ -45,82 +114,32 @@ class _ExplorePageState extends State<ExplorePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(height: 20),
-                    _sectionHeader('Find your next trip', actionLabel: 'See all'),
-                    const SizedBox(height: 12),
-                    FutureBuilder<List<TripModel>>(
+                    _buildSection<TripModel>(
+                      title: 'Find your next trip',
+                      actionLabel: 'See all',
                       future: tripsFuture,
-                      builder: (context, snap) {
-                        if (snap.connectionState != ConnectionState.done) {
-                          return SizedBox(height:230, child: Center(child: CircularProgressIndicator()));
-                        }
-                        if (snap.hasError) {
-                          return SizedBox(height:230, child: Center(child: Text('Error loading trips')));
-                        }
-                        final trips = snap.data ?? [];
-                        return SizedBox(
-                          height:230,
-                          child: ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: trips.length,
-                            separatorBuilder: (_,__)=> const SizedBox(width:20),
-                            itemBuilder: (_,i)=> TripCard(trip: trips[i]),
-                          ),
-                        );
-                      },
+                      height: 230,
+                      itemBuilder: (item) => TripCard(trip: item),
                     ),
                     const SizedBox(height: 36),
-                    _sectionHeader('Explore by living style'),
-                    const SizedBox(height: 12),
-                    FutureBuilder<List<LivingStyleModel>>(
+                    _buildSection<LivingStyleModel>(
+                      title: 'Explore by living style',
                       future: livingFuture,
-                      builder: (context, snap) {
-                        if (snap.connectionState != ConnectionState.done) {
-                          return SizedBox(height:210, child: Center(child: CircularProgressIndicator()));
-                        }
-                        if (snap.hasError) {
-                          return SizedBox(height:210, child: Center(child: Text('Error loading')));
-                        }
-                        final list = snap.data ?? [];
-                        return SizedBox(
-                          height:210,
-                          child: ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: list.length,
-                            separatorBuilder: (_,__)=> const SizedBox(width:20),
-                            itemBuilder: (_,i)=> LivingStyleCard(style: list[i]),
-                          ),
-                        );
-                      },
+                      height: 210,
+                      itemBuilder: (item) => LivingStyleCard(style: item),
                     ),
                     const SizedBox(height: 36),
-                    _sectionHeader('Want to discover other experiences'),
-                    const SizedBox(height: 12),
-                    FutureBuilder<List<ExperienceModel>>(
+                    _buildSection<ExperienceModel>(
+                      title: 'Want to discover other experiences',
                       future: expFuture,
-                      builder: (context, snap) {
-                        if (snap.connectionState != ConnectionState.done) {
-                          return SizedBox(height:160, child: Center(child: CircularProgressIndicator()));
-                        }
-                        if (snap.hasError) {
-                          return SizedBox(height:160, child: Center(child: Text('Error loading')));
-                        }
-                        final list = snap.data ?? [];
-                        return SizedBox(
-                          height:160,
-                          child: ListView.separated(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: list.length,
-                            separatorBuilder: (_,__)=> const SizedBox(width:20),
-                            itemBuilder: (_,i)=> ExperienceCard(exp: list[i]),
-                          ),
-                        );
-                      },
+                      height: 160,
+                      itemBuilder: (item) => ExperienceCard(exp: item),
                     ),
                     const SizedBox(height: 80),
                   ],
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -197,7 +216,9 @@ class _ExplorePageState extends State<ExplorePage> {
       return Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          active ? ShaderMask(shaderCallback: (r) => gradient.createShader(r), child: Icon(icon, size: 26, color: Colors.white)) : Icon(icon, size: 26, color: AppColors.navGray),
+          active
+              ? ShaderMask(shaderCallback: (r) => gradient.createShader(r), child: Icon(icon, size: 26, color: Colors.white))
+              : Icon(icon, size: 26, color: AppColors.navGray),
           const SizedBox(height: 6),
           active
               ? ShaderMask(shaderCallback: (r) => gradient.createShader(r), child: Text(label, style: AppText.navLabel.copyWith(color: Colors.white)))

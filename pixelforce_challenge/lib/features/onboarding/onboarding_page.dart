@@ -45,7 +45,7 @@ class OnboardingPage extends StatelessWidget {
               ),
             ),
           ),
-
+     
           Positioned(
             left: 0,
             right: 0,
@@ -67,6 +67,7 @@ class OnboardingPage extends StatelessWidget {
             ),
           ),
 
+          
           Positioned(
             left: 0,
             right: 0,
@@ -96,6 +97,7 @@ class OnboardingPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 30),
 
+                
                   SizedBox(
                     width: double.infinity,
                     height: 50,
@@ -112,13 +114,13 @@ class OnboardingPage extends StatelessWidget {
                       child: Ink(
                         decoration: BoxDecoration(
                           gradient: const LinearGradient(
-                            colors: [Color(0xFF917AFD), Color(0xFF6246EA)],
+                            colors:  [AppColors.gradientStart, AppColors.gradientEnd],
                           ),
                           borderRadius: BorderRadius.circular(30),
                         ),
                         child: const Center(
                           child: Text(
-                            "Get Started",
+                            "Log in",
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 16,
@@ -129,12 +131,11 @@ class OnboardingPage extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 16),
 
+                  
                   TextButton(
-                    onPressed: () =>
-                        Navigator.pushReplacementNamed(context, '/login'),
+                    onPressed: () => Navigator.pushReplacementNamed(context, '/login'),
                     child: const Text(
                       "Sign up",
                       style: TextStyle(
@@ -180,6 +181,15 @@ class OnboardingPage extends StatelessWidget {
             child: Image.network(
               urls[i],
               fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Container(
+                  color: Colors.grey.shade200,
+                  child: const Center(
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                );
+              },
               errorBuilder: (context, error, stackTrace) {
                 return Container(
                   color: Colors.grey.shade300,
